@@ -1,10 +1,9 @@
 /*
 ResponsiveVideo Web Component.
+To use: load this module in your page and wrap a responsive-video element around your video element
+This makes a responsive video element respond to source media changes too
 Copyright 2023 Scott Jehl, @scottjehl
 MIT License
-This makes a responsive video element reassess video sources when their media changes
-To use: load this module in your page and wrap a responsive-video element around your video element
-
 */
 class ResponsiveVideo extends HTMLElement {
   constructor() {
@@ -24,18 +23,17 @@ class ResponsiveVideo extends HTMLElement {
 
   bindMediaListeners(){
     const video = this.video;
-    const that = this;
     this.querySelectorAll('source').forEach( source => {
       if( source.media ){
-        function mqListener(){
-            if( source.media === video.currentSrc || !that.previousSiblingIsPlaying(source, video.currentSrc) && !that.reloadQueued ){
-                that.reloadVideo();
+        let mqListener = () => {
+            if( source.media === video.currentSrc || !this.previousSiblingIsPlaying(source, video.currentSrc) && !this.reloadQueued ){
+                this.reloadVideo();
             }
-        }
-        that.listenedMedia.push({media: source.media, handler: mqListener});
+        };
+        this.listenedMedia.push({media: source.media, handler: mqListener});
         window.matchMedia( source.media ).addEventListener("change", mqListener);
       }
-    } );
+    }, this );
   }
 
   unbindMediaListeners(){
@@ -57,15 +55,14 @@ class ResponsiveVideo extends HTMLElement {
 
   reloadVideo(){
     this.reloadQueued = true;
-    const that = this;
     const currentTime = this.video.currentTime;
     const playState = this.video.playState;
     this.video.load();
-    function videoLoaded() {
-        this.playState = playState;
-        this.currentTime = currentTime.toString();
-        that.reloadQueued = false;
-        this.removeEventListener("loadeddata", videoLoaded);
+    let videoLoaded = () => {
+        this.video.playState = playState;
+        this.video.currentTime = currentTime.toString();
+        this.reloadQueued = false;
+        this.video.removeEventListener("loadeddata", videoLoaded);
     }
     this.video.addEventListener("loadeddata", videoLoaded );
   }
