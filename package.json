@@ -1,0 +1,19 @@
+{
+  "name": "responsivevideo",
+  "version": "1.0.0",
+  "description": "a web component that makes video elements reassess video sources when their media changes",
+  "main": "responsivevideo.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scottjehl/ResponsiveVideo.git"
+  },
+  "author": "scottjehl",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/scottjehl/ResponsiveVideo/issues"
+  },
+  "homepage": "https://github.com/scottjehl/ResponsiveVideo#readme"
+}
