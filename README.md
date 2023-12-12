@@ -1,9 +1,9 @@
 # ResponsiveVideo
-This is a web component that makes video elements reassess video sources when their media changes, which it doesn't do by default.
+This is a web component that makes responsive HTML video elements remain responsive after page load, you know like when someone resizes the browser, which they don't currently do by default.
 
 Read the article https://scottjehl.com/posts/even-responsiver-video/ 
 
-Docs are TBD here but for now, here's how you an use it:
+Docs are TBD here but for now, here's how you an use it. There's no API or configuration other than that.
 
 ```html
 <responsive-video>
