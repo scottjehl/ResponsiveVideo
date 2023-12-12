@@ -1,6 +1,6 @@
 {
-  "name": "responsivevideo",
-  "version": "1.0.0",
+  "name": "@scottjehl/responsivevideo",
+  "version": "0.1.0",
   "description": "a web component that makes video elements reassess video sources when their media changes",
   "main": "responsivevideo.js",
   "scripts": {
