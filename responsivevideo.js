@@ -8,11 +8,11 @@ MIT License
 class ResponsiveVideo extends HTMLElement {
 	constructor() {
 		super();
-		this.video = this.querySelector('video');
 		this.listenedMedia = [];
 		this.reloadQueued = false;
 	}
 	connectedCallback() {
+		this.video = this.querySelector('video');
 		this.bindMediaListeners();
 	}
 	disconnectedCallback() {
