@@ -16,3 +16,10 @@ Docs are TBD here but for now, here's how you an use it. There's no API or confi
 ```
 
 
+## Known Limitations
+
+I'll add notes here for any issues that seem relevant to mention.
+
+### Chrome issue with setting currentTime on localhost
+This is not an issue particular to this component, but it's related. In Chrome, when working in a local development environment, you might find that videos appear to lose track of their currentTime when sources swap. This problem tends to go away on a live web server with more thorough configuration, but the basic issue is that Chrome expects range reponses for video and will not let you set the currentTime on a video if the server is not configured to send those. This issue tracks the Chrome situation: https://bugs.chromium.org/p/chromium/issues/detail?id=1018533
+
