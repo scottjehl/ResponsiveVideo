@@ -75,7 +75,7 @@ const videoMediaChangeSupport = async () => {
 		iframe.style.cssText = `position: absolute; visibility: hidden;`;
 		document.documentElement.append(iframe);
 		iframe.contentDocument.body.append(video);
-		setTimeout(() => { iframe.width = "15px"; });
+		setTimeout(() => { iframe.width = "15"; });
 		setTimeout(() => {
 			iframe.remove();
 			resolve(false);
