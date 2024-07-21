@@ -48,10 +48,10 @@ class ResponsiveAudio extends HTMLElement {
 	reloadAudio(){
 		this.reloadQueued = true;
 		const currentTime = this.audio.currentTime;
-		const playState = this.audio.playState;
+		const playState = this.audio.paused;
 		this.audio.load();
 		const audioLoaded = () => {
-			this.audio.playState = playState;
+			this.audio.paused = playState;
 			this.audio.currentTime = currentTime.toString();
 			this.reloadQueued = false;
 			this.audio.removeEventListener("loadeddata", audioLoaded);
