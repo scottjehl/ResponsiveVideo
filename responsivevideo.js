@@ -2,7 +2,7 @@
 ResponsiveVideo Web Component
 This makes a responsive video element respond to source media changes too
 To use: load this module in your page and wrap a responsive-video element around your video element
-Copyright 2023 Scott Jehl, @scottjehl
+Copyright 2024 Scott Jehl, @scottjehl
 MIT License
 */
 class ResponsiveVideo extends HTMLElement {
@@ -22,7 +22,7 @@ class ResponsiveVideo extends HTMLElement {
 		this.querySelectorAll('source').forEach(source => {
 			if (source.media) {
 				const mqListener = () => {
-					if (source.media === this.video.currentSrc || !this.previousSiblingIsPlaying(source, this.video.currentSrc) && !this.reloadQueued) {
+					if ((source.src === this.video.currentSrc || !this.previousSiblingIsPlaying(source, this.video.currentSrc)) && !this.reloadQueued) {
 						this.reloadVideo();
 					}
 				};
@@ -36,14 +36,26 @@ class ResponsiveVideo extends HTMLElement {
 			window.matchMedia(listener.media).removeEventListener("change", listener.handler);
 		});
 	}
-	previousSiblingIsPlaying(elem, src) {
-		let prevSibling = elem;
-		while (elem.previousElementSibling) {
-			if (prevSibling.src === src) {
-				return true;
+	getPrevSiblings(elem){
+		let siblings = [];
+		function step(newElem){
+			if(newElem.previousElementSibling){
+				siblings.push(newElem.previousElementSibling);
+				step(newElem.previousElementSibling);
 			}
 		}
-		return false;
+		step(elem);
+		return siblings;
+	}
+	previousSiblingIsPlaying(elem, currentSrc) {
+		let prevSiblings = this.getPrevSiblings(elem);
+		let priorSiblingIsPlaying = false;
+		prevSiblings.forEach(el => {
+			if (el.src === currentSrc) {
+				priorSiblingIsPlaying = true;
+			}
+		});
+		return priorSiblingIsPlaying;
 	}
 	reloadVideo(){
 		this.reloadQueued = true;
