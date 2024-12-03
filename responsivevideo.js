@@ -21,19 +21,29 @@ class ResponsiveVideo extends HTMLElement {
 	bindMediaListeners(){
 		this.querySelectorAll('source').forEach(source => {
 			if (source.media) {
-				const mqListener = () => {
+				const mqListener = (mq) => {
 					if ((source.src === this.video.currentSrc || !this.previousSiblingIsPlaying(source, this.video.currentSrc)) && !this.reloadQueued) {
 						this.reloadVideo();
 					}
 				};
-				this.listenedMedia.push({ media: source.media, handler: mqListener });
-				window.matchMedia(source.media).addEventListener("change", mqListener);
+				let mm = window.matchMedia(source.media);
+				this.listenedMedia.push({ media: mm, handler: mqListener });
+				if(mm?.addListener){
+					mm.addListener(mqListener);
+				} else {
+					mm.addEventListener("change", mqListener);
+				}
 			}
 		});
 	}
 	unbindMediaListeners(){
 		this.listenedMedia.forEach(listener => {
-			window.matchMedia(listener.media).removeEventListener("change", listener.handler);
+			let mm = listener.media;
+			if(mm?.removeListener){
+				mm.removeListener(listener.handler);
+			} else {
+				mm.removeEventListener("change", listener.handler);
+			}
 		});
 	}
 	getPrevSiblings(elem){
@@ -78,6 +88,12 @@ const videoMediaChangeSupport = async () => {
 		const iframe = document.createElement("iframe");
 		const video = document.createElement("video");
 		const source = document.createElement("source");
+		// iOS doesn't support so many things that are needed to test this.
+		// here we're exiting early assuming the browser doesn't support the feature
+		// because it doesn't support related APIs
+		if( !window?.MediaSource ){
+			return resolve(false);
+		}
 		const mediaSource = new MediaSource();
 		mediaSource.addEventListener("sourceopen", () => resolve(true));
 		source.src = URL.createObjectURL(mediaSource);
